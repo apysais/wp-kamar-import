@@ -66,7 +66,7 @@ class WKI_GetJsonFile {
   }
 
   public function move( $current_folder, $new_folder ) {
-    $this->rename( $current_folder, $new_folder );
+		$this->rename( $current_folder, $new_folder );
   }
 
   public function delete( $file ) {

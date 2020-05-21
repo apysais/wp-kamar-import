@@ -42,12 +42,20 @@ class WKI_Import_Meetings {
 	public function __construct()	{
   }
 
-  public function import( $args = [] ) {
-    $datas = [];
-    if ( isset($args['data']) ) {
-      $datas = $args['data'];
-      foreach( $datas as $data ) {
+	public function init( $args = [] ) {
+		$datas = [];
+		if ( isset($args['data']) ) {
+			$datas = $args['data'];
+			$ret = $this->import($datas);
+			//remove data that is removed in json
+			WKI_DB_Notices::get_instance()->remove_notices($datas);
+		}
+	}
 
+	public function import( $datas = [] ) {
+		$ret = [];
+		if ( count($datas) >= 1 ) {
+			foreach( $datas as $data ) {
         if ( $data['PublishWeb'] == 1) {
           $post_data = [
             'post_title'   => esc_html($data['Subject']),
@@ -75,17 +83,19 @@ class WKI_Import_Meetings {
 
           if ( !$check_meetings ) {
             //insert
-            wp_insert_post($post_data);
+            $insert_id = wp_insert_post($post_data);
+						$ret['insert']['mettings'][] = $insert_id;
           } else {
             //update
-            $post_data['ID'] = $check_meetings[0]->ID;
+						$post_id = $check_notice[0]->ID;
+						$post_data['ID'] = $post_id;
             wp_update_post( $post_data );
+						$ret['update']['mettings'][] = $post_id;
           }
-
         }//if PublishWeb
-
       }//foreach datas
-    }//if data
+		}// !empty($datas)
+		return $ret;
 	}//import
 
 }//WKI_Notices

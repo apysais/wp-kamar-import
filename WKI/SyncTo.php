@@ -42,12 +42,23 @@ class WKI_SyncTo {
 	public function __construct()	{
 	}
 
-  public function sync_to() {
+	public function manual() {
+		$action = isset( $_GET['kamar_import_notice'] ) ? $_GET['kamar_import_notice'] : false;
+		$json_file = isset( $_GET['kamar_import_notice_json_file'] ) ? $_GET['kamar_import_notice_json_file'] : '';
+
+		if ( $action && is_admin() ) {
+			$this->sync_to( $json_file );
+			wki_redirect_to('admin.php?page=kamar-import-notice');
+		}
+
+	}
+
+  public function sync_to( $file_json = '' ) {
     if ( $file_json == '' ) {
 			$files = WKI_GetJsonFile::get_instance()->getFilesInDir();
 		} else {
 			$files = pathinfo( WP_KAMAR_JSON_DIRECTORY . $file_json );
-		}
+		}// if $file_json
 
 		if ( !empty( $files ) ) {
 			foreach ( $files as $file ) {
@@ -60,19 +71,27 @@ class WKI_SyncTo {
 
 					$get_content_json_obj = new WKI_GetJsonContent;
 					$json_data = $get_content_json_obj->getContent($json_file);
-					if ( isset($json_data['SMSDirectoryData']) ) {
+					if ( isset( $json_data['SMSDirectoryData'] ) ) {
+
 						$sync = $json_data['SMSDirectoryData']['sync'];
 						$sync_to = 'WKI_' . ucfirst($sync);
 
-						if ( class_exists($sync_to) ) {
-							$sync_obj = new $sync_to($json_data);
-						}
+						if ( class_exists( $sync_to ) ) {
+							$sync_obj = new $sync_to( $json_data );
+							//move the json to data-done folder
+							if ( $file_name && $file_path ) {
+								//move the current json
+								WKI_GetJsonFile::get_instance()->move( $json_file, WP_KAMAR_JSON_DIRECTORY_DONE . $file_name );
+								wki_custom_logs( 'Kamar Import : ' . $file_name, 'kamar' );
+							} //if filename and file path
+						}//if class exists
 
-					}
-
+					}// if isset SMSDirectoryData
 				}// if ext json
 			}//foreach $files
 		}//if !empty $files
-  }
 
-}//KIE_GetFiles
+		return false;
+  }//sync_to
+
+}//WKI_SyncTo

@@ -42,47 +42,59 @@ class WKI_Import_Notices {
   public function __construct()	{
   }
 
-	public function import( $args = [] ) {
-    $datas = [];
-    if ( isset($args['data']) ) {
-      $datas = $args['data'];
-      foreach( $datas as $data ) {
+	public function init( $args = [] ) {
+		$datas = [];
+		if ( isset($args['data']) ) {
+			$datas = $args['data'];
+			$ret = $this->import($datas);
+			//remove data that is removed in json
+			WKI_DB_Notices::get_instance()->remove_notices($datas);
+		}
+	}
 
-        if ( $data['PublishWeb'] == 1) {
-          $post_data = [
-            'post_title'   => esc_html($data['Subject']),
-            'post_content' => $data['Body'],
-            'post_type'    => 'wki_notices',
-            'post_status'  => 'publish',
-            'meta_input'   => [
-              'wki_notice_level'        => $data['Level'],
-              'wki_notice_uuid'         => $data['uuid'],
-              'wki_notice_date_start'   => $data['DateStart'],
-              'wki_notice_date_finish'  => $data['DateFinish'],
-              'wki_notice_teacher'      => $data['Teacher'],
-            ],
-          ];
+	public function import( $datas = [] ) {
+		$ret = [];
+		if ( count($datas) >= 1 ) {
+			foreach( $datas as $data ) {
 
-          $check_notice = get_posts([
-  					'post_type'      => 'wki_notices',
-  					'posts_per_page' => 1,
-  					'meta_key'       => 'wki_notice_uuid',
-  					'meta_value'     => $data['uuid'],
-  				]);
+				if ( $data['PublishWeb'] == 1) {
+					$post_data = [
+						'post_title'   => esc_html($data['Subject']),
+						'post_content' => $data['Body'],
+						'post_type'    => 'wki_notices',
+						'post_status'  => 'publish',
+						'meta_input'   => [
+							'wki_notice_level'        => $data['Level'],
+							'wki_notice_uuid'         => $data['uuid'],
+							'wki_notice_date_start'   => $data['DateStart'],
+							'wki_notice_date_finish'  => $data['DateFinish'],
+							'wki_notice_teacher'      => $data['Teacher'],
+						],
+					];
 
-          if ( !$check_notice ) {
-            //insert
-            wp_insert_post($post_data);
-          } else {
-            //update
-            $post_data['ID'] = $check_notice[0]->ID;
-            wp_update_post( $post_data );
-          }
+					$check_notice = get_posts([
+						'post_type'      => 'wki_notices',
+						'posts_per_page' => 1,
+						'meta_key'       => 'wki_notice_uuid',
+						'meta_value'     => $data['uuid'],
+					]);
 
-        }//if PublishWeb
+					if ( !$check_notice ) {
+						//insert
+						$insert_id = wp_insert_post($post_data);
+						$ret['insert']['notices'][] = $insert_id;
+					} else {
+						//update
+						$post_id = $check_notice[0]->ID;
+						$post_data['ID'] = $post_id;
+						wp_update_post( $post_data );
+						$ret['update']['notices'][] = $post_id;
+					}
 
-      }//foreach datas
-    }//if data
+				}//if PublishWeb
+			}//foreach datas
+		}// !empty($datas)
+		return $ret;
 	}//import
 
 }//WKI_Notices

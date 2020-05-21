@@ -45,12 +45,13 @@ class WKI_Notices {
 
 	public function init($json_data) {
 		$data = [];
+
 		if ( isset($json_data['SMSDirectoryData']) && isset($json_data['SMSDirectoryData']['notices']) ) {
 			if ( $json_data['SMSDirectoryData']['notices']['count'] >= 1) {
 				$json_data = $json_data['SMSDirectoryData']['notices']['data'];
 
-				WKI_Import_Notices::get_instance()->import(['data' => $json_data]);
-				WKI_Import_Meetings::get_instance()->import(['data' => $json_data]);
+				WKI_Import_Notices::get_instance()->init(['data' => $json_data]);
+				WKI_Import_Meetings::get_instance()->init(['data' => $json_data]);
 			}
 		}
 	}

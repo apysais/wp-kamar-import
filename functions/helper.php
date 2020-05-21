@@ -8,6 +8,7 @@ function wki_dd( $arr = [] ) {
   print_r($arr);
   echo '</pre>';
 }
+
 function  wki_redirect_to($url) {
 	?>
 	<script type="text/javascript">
@@ -35,16 +36,16 @@ function  wki_delete_custom_posts($post_type = ''){
     return $result;
 }
 
-function  wki_run_cron_manually() {
-	if ( isset( $_GET['kie_cron'] ) && $_GET['x'] = 'x123x456' ) {
+function wki_run_cron_manually() {
+	if ( isset( $_GET['kie_notice_cron'] ) && $_GET['x'] = 'x123x456' ) {
 		if ( is_user_logged_in() && current_user_can('administrator') ) {
-			//WKI_Cron::get_instance()->eo();
+				WKI_SyncTo::get_instance()->sync_to();
 		}
 		die();
 	}
 }
 
-function wkie_custom_logs($message, $custom_log_name = 'custom') {
+function wki_custom_logs($message, $custom_log_name = 'custom') {
     if(is_array($message)) {
         $message = json_encode($message);
     }

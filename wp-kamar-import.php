@@ -36,8 +36,8 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'WP_KAMAR_IMPORT_VERSION', '1.0.0' );
-define ( 'WP_KAMAR_JSON_DIRECTORY', ABSPATH . 'kamar/directoryservices/json/data/' );
-define ( 'WP_KAMAR_JSON_DIRECTORY_DONE', ABSPATH . 'kamar/directoryservices/json/data-done/' );
+define( 'WP_KAMAR_JSON_DIRECTORY', ABSPATH . 'kamar/directoryservices/json/data/' );
+define( 'WP_KAMAR_JSON_DIRECTORY_DONE', ABSPATH . 'kamar/directoryservices/json/data-done/' );
 
 /**
  * For autoloading classes
@@ -98,7 +98,7 @@ function activate_wp_kamar_import() {
 add_action( 'wki_cron_hook', 'wki_cron_hook_function' );
 //create your function, that runs on cron
 function wki_cron_hook_function() {
-    //KIE_Cron::get_instance()->eo();
+	WKI_SyncTo::get_instance()->sync_to();
 }
 
 /**
@@ -135,9 +135,11 @@ function run_wp_kamar_import() {
 	$plugin = new Wp_Kamar_Import();
 	$plugin->run();
 
-	if ( isset($_GET['test']) ) {
-		WKI_SyncTo::get_instance()->sync_to();
-	}
+	WKI_Menu::get_instance();
+
+	//kie_run_cron_manually();
+	WKI_SyncTo::get_instance()->manual();
+
 }
 add_action( 'plugins_loaded', 'run_wp_kamar_import' );
 //run_wp_kamar_import();
