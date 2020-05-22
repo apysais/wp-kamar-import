@@ -60,8 +60,8 @@ class WKI_Menu {
     $files = WKI_GetJsonFile::get_instance()->getFilesInDir();
     ?>
     <div class="wrap">
-        <h1><?php _e( 'Files to import.', 'textdomain' ); ?></h1>
-				<h3><?php _e( 'Click to Import.', 'textdomain' ); ?></h3>
+        <h1><?php _e( 'Files to import Notices and Meetings.' ); ?></h1>
+				<h3><?php _e( 'Click to Import.' ); ?></h3>
 				<?php if ( $files ) : ?>
 					<table>
 						<thead>
@@ -75,7 +75,11 @@ class WKI_Menu {
 										<?php $file_name = $file['filename']; ?>
 										<?php $full_path_file_name = $file['path'] .'/'. $file['filename']; ?>
 										<td>
-											<h3><a href="?kamar_import_notice=1&kamar_import_notice_json_file=<?php echo $file_name; ?>"><?php echo $file_name; ?></a></h3>
+											<h3>
+												<a href="?kamar_import_notice=1&kamar_import_notice_json_file=<?php echo $file_name; ?>">
+													<?php echo $file_name; ?>
+												</a>
+											</h3>
 										</td>
 										<td><h3><?php echo date("D d F ", filemtime($full_path_file_name) ); ?> at <?php echo date("G:i:s", filemtime($full_path_file_name) ); ?></h3></td>
 									<?php endif; ?>

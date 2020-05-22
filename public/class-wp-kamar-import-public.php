@@ -72,7 +72,7 @@ class Wp_Kamar_Import_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		wp_enqueue_style( 'bootstrap4-iso', wki_get_plugin_dir_url() . 'assets/bootstrap-iso/bootstrap-iso.min.css', array(), '4.4.1', 'all' );
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-kamar-import-public.css', array(), $this->version, 'all' );
 
 	}
@@ -95,8 +95,8 @@ class Wp_Kamar_Import_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-kamar-import-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( 'bootstrap4-iso', wki_get_plugin_dir_url() . 'assets/bootstrap-iso/bootstrap.min.js', array( 'jquery' ), '4.4.1', true );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-kamar-import-public.js', array( 'jquery' ), $this->version, true );
 
 	}
 

@@ -42,6 +42,59 @@ class WKI_DB_Meetings {
   public function __construct()	{
   }
 
+	public function get_by_date( $args = [] ) {
+		$current_date = isset( $args['current_date'] ) ? $args['current_date'] : false;
+		$data = [];
+		if ( $current_date ) {
+			$args = array(
+	      'post_limits' => -1,
+	      'post_type' => 'wki_meetings',
+	      'meta_key' => 'wki_meetings_date_start',
+	      'meta_query' => array(
+	          'relation' => 'AND',
+	              array(
+	                  'key' => 'wki_meetings_date_start',
+	                  'value' => $current_date,
+	                  'compare' => '<',
+	                  'type' => 'NUMERIC',
+	              ),
+	              array(
+	                  'key' => 'wki_meetings_date_finish',
+	                  'value' => $current_date,
+	                  'compare' => '>=',
+	                  'type' => 'NUMERIC',
+	              )
+	          ),
+	      'order_by' => 'meta_value_num',
+	      'order' => 'ASC',
+	    );
+			//wki_dd($args);
+	    $query = new WP_Query( $args );
+	    if ( $query->have_posts() ) {
+				//wki_dd($query->posts);
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					$post_id = get_the_ID();
+					$get_date = get_post_meta( $post_id, 'wki_meetings_time', true );
+					$parse_date = \Carbon\Carbon::parse($get_date);
+					$data[] = [
+						'title' => get_the_title(),
+						'content' =>get_the_content(),
+						'level' => get_post_meta( $post_id, 'wki_meetings_level', true ),
+						'location' => get_post_meta( $post_id, 'wki_meetings_place', true ),
+						'time' => get_post_meta( $post_id, 'wki_meetings_time', true ),
+						'raw_date' => get_post_meta( $post_id, 'wki_meetings_date', true ),
+						'format_date' => $parse_date->format('D d F'),
+						'staff' => get_post_meta( $post_id, 'wki_meetings_teacher', true),
+					];
+				}
+				$data = json_decode( json_encode( $data ) );
+	    }
+	    wp_reset_postdata();
+		}
+		return $data;
+	}
+
 	public function get_all() {
     $data = [];
 		$check_meetings = get_posts([

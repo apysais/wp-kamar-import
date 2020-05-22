@@ -42,6 +42,51 @@ class WKI_DB_Notices {
   public function __construct()	{
   }
 
+	public function get_by_date( $args = [] ) {
+		$current_date = isset( $args['current_date'] ) ? $args['current_date'] : false;
+		if ( $current_date ) {
+			$args = array(
+	      'post_limits' => -1,
+	      'post_type' => 'wki_notices',
+	      'meta_key' => 'wki_notice_date_start',
+	      'meta_query' => array(
+	        'relation' => 'AND',
+	            array(
+	                'key' => 'wki_notice_date_start',
+	                'value' => $current_date,
+	                'compare' => '<',
+	                'type' => 'NUMERIC',
+	            ),
+	            array(
+	                'key' => 'wki_notice_date_finish',
+	                'value' => $current_date,
+	                'compare' => '>=',
+	                'type' => 'NUMERIC',
+	            )
+	        ),
+	      'order_by' => 'meta_value_num',
+	      'order' => 'ASC',
+	    );
+			//wki_dd($args);
+			$query = new WP_Query( $args );
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					$post_id = get_the_ID();
+					$data[] = [
+						'title' => get_the_title(),
+						'content' =>get_the_content(),
+						'level' => get_post_meta( $post_id, 'wki_notice_level', true ),
+						'staff' => get_post_meta( $post_id, 'wki_notice_teacher', true),
+					];
+				}
+				$data = json_decode( json_encode( $data ) );
+	    }
+	    wp_reset_postdata();
+		}
+		return $data;
+	}
+
 	public function get_all() {
     $data = [];
 		$check_notices = get_posts([

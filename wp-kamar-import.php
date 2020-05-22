@@ -82,6 +82,13 @@ function wki_get_plugin_dir(){
 }
 
 /**
+* get the plugin url path.
+**/
+function wki_get_plugin_dir_url() {
+ return plugin_dir_url( __FILE__ );
+}
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-wp-kamar-import-activator.php
  */
@@ -136,7 +143,8 @@ function run_wp_kamar_import() {
 	$plugin->run();
 
 	WKI_Menu::get_instance();
-
+	//shortcodes
+	WKI_Shortcode_Notices::get_instance();
 	//kie_run_cron_manually();
 	WKI_SyncTo::get_instance()->manual();
 

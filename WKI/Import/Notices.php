@@ -57,7 +57,11 @@ class WKI_Import_Notices {
 		if ( count($datas) >= 1 ) {
 			foreach( $datas as $data ) {
 
-				if ( $data['PublishWeb'] == 1) {
+				if (
+							$data['PublishWeb'] == 1
+							&& $data['MeetingTime'] == ''
+							&& $data['MeetingPlace'] == ''
+				) {
 					$post_data = [
 						'post_title'   => esc_html($data['Subject']),
 						'post_content' => $data['Body'],

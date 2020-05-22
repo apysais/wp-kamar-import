@@ -87,7 +87,7 @@ class WKI_View {
 	 * */
 	public function get_in_theme( $template_file ) {
 		if ( defined('STYLESHEETPATH') && defined('TEMPLATEPATH') ) {
-			if ( locate_template ($template_file ) ) {
+			if ( locate_template ( $template_file ) ) {
 				return locate_template( $template_file );
 			}
 		}
@@ -326,7 +326,7 @@ class WKI_View {
 		extract( $data );
 		if ( file_exists( $template_file ) ) {
 			//check in plugin
-			$template_file = apply_filters( 'sio_display_template_file', $template_file, $data, 10, 2);
+			$template_file = apply_filters( 'wki_display_template_file', $template_file, $data, 10, 2);
 			if ( $require ) {
 				require $template_file;
 			}else{
