@@ -54,6 +54,7 @@ class WKI_Shortcode_Notices {
 
 		//pagination
 		$yesterday_date = \Carbon\Carbon::parse($get_current_date)->subDays(1);
+		$today_date = \Carbon\Carbon::parse( current_time( 'timestamp', 0 ) );
 		$tomorrow_date = \Carbon\Carbon::parse($current_date)->addDays(1);
 		//pagination
 
@@ -68,7 +69,7 @@ class WKI_Shortcode_Notices {
 			'notices' => $notices,
 			'meetings' => $meetings,
 			'current_date' => $current_date->format('Y-m-d'),
-			'current_date_uri' => '?notice_date=' . $current_date->format('Y-m-d'),
+			'today_date_uri' => '?notice_date=' . $today_date->format('Y-m-d'),
 			'yesterday_date' => $yesterday_date->format('Y-m-d'),
 			'yesterday_date_uri' => '?notice_date=' . $yesterday_date->format('Y-m-d'),
 			'tomorrow_date' => $tomorrow_date->format('Y-m-d'),

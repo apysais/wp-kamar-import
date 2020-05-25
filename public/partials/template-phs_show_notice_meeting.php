@@ -1,11 +1,14 @@
-<!-- From Plugin -->
+<!-- From Theme -->
 <div class="bootstrap-iso">
+
   <h2 class="notice-current-date"><?php echo \Carbon\Carbon::parse($current_date)->format('l dS '); ?> Of <?php echo \Carbon\Carbon::parse($current_date)->format(' F, Y'); ?></h2>
 
-  <div class="btn-group" role="group" aria-label="Pagination">
-    <a class="btn btn-secondary" href="<?php echo $yesterday_date_uri;?>">Previous Day</a>
-    <a class="btn btn-secondary" href="<?php echo $current_date_uri;?>">Today</a>
-    <a class="btn btn-secondary" href="<?php echo $tomorrow_date_uri;?>">Next Day</a>
+  <div class="notice-pagination">
+    <div class="btn-group" role="group" aria-label="Pagination">
+      <a class="btn btn-secondary" href="<?php echo $yesterday_date_uri;?>">Previous Day</a>
+      <a class="btn btn-secondary" href="<?php echo $today_date_uri;?>">Today</a>
+      <a class="btn btn-secondary" href="<?php echo $tomorrow_date_uri;?>">Next Day</a>
+    </div>
   </div>
 
   <div class="table-responsive">
@@ -27,7 +30,10 @@
                   <tr>
                     <td class="level"><?php echo $meeting->level;?></td>
                     <td class="location"><?php echo $meeting->location;?></td>
-                    <td class="content"><?php echo $meeting->content;?></td>
+                    <td class="content">
+                      <h3 class="title"><?php echo $meeting->title;?></h3>
+                      <?php echo $meeting->content;?>
+                    </td>
                     <td class="date_time"><?php echo $meeting->format_date;?> <?php echo $meeting->time;?></td>
                     <td class="staff"><?php echo $meeting->staff;?></td>
                   </tr>
@@ -54,7 +60,10 @@
             <?php foreach( $notices as $notice ) : ?>
                     <tr>
                       <td class="level"><?php echo $notice->level;?></td>
-                      <td class="content"><?php echo $notice->content;?></td>
+                      <td class="content">
+                        <h3 class="title"><?php echo $notice->title;?></h3>
+                        <?php echo $notice->content;?>
+                      </td>
                       <td class="staff"><?php echo $notice->staff;?></td>
                     </tr>
             <?php endforeach; ?>

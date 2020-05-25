@@ -81,7 +81,13 @@ class WKI_SyncTo {
 							//move the json to data-done folder
 							if ( $file_name && $file_path ) {
 								//move the current json
-								WKI_GetJsonFile::get_instance()->move( $json_file, WP_KAMAR_JSON_DIRECTORY_DONE . $file_name );
+								if ( $sync == 'notices' ) {
+									$move_to = WP_KAMAR_JSON_DIRECTORY_DONE_NOTICES;
+								} elseif( $sync == 'calendar' ) {
+									$move_to = WP_KAMAR_JSON_DIRECTORY_DONE_EVENTS;
+								}
+
+								WKI_GetJsonFile::get_instance()->move( $json_file, $move_to . $file_name );
 								wki_custom_logs( 'Kamar Import : ' . $file_name, 'kamar' );
 							} //if filename and file path
 						}//if class exists
