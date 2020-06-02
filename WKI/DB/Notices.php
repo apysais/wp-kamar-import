@@ -122,12 +122,11 @@ class WKI_DB_Notices {
 
 		$notices = $this->get_all();
 
-    $uuids = $this->get_data_uuids($data);
+    $uuids = $this->get_data_uuids( $data );
 
 		$key_kamars   = $uuids;
-		$key_notices  = array_keys($notices);
-		$results      = array_diff($key_notices, $key_kamars);
-
+		$key_notices  = array_keys( $notices );
+		$results      = array_diff( $key_notices , $key_kamars );
 		if ( count( $results ) >= 1 ) {
 			$args = array(
 			    'post_type'  => 'wki_notices',
@@ -141,14 +140,13 @@ class WKI_DB_Notices {
 			);
 
 			$query = new WP_Query( $args );
-
 			if ( $query->have_posts() ) {
-					$posts = $query->get_posts();
-					foreach( $posts as $post ) {
-						$post_id = $post->ID;
-						wp_delete_post( $post_id );
-					}
+				$posts = $query->get_posts();
+				foreach( $posts as $post ) {
+					$post_id = $post->ID;
+					wp_delete_post( $post_id );
 				}
+			}
 			wp_reset_postdata();
 		}
   }

@@ -43,10 +43,20 @@ class WKI_Shortcode_Notices {
     add_shortcode( 'phs_show_notice_meeting', [ $this, 'init' ] );
   }
 
-  public function init() {
+	public function minimal() {
+
+	}
+
+  public function init( $atts ) {
+		$atts = shortcode_atts( array(
+        'minimal' => false,
+        'show_date_pagination' => false
+    ), $atts, 'phs_show_notice_meeting' );
 
     //$current_date = date( 'Ymd', current_time( 'timestamp', 0 ) );
     $current_date = \Carbon\Carbon::parse( current_time( 'timestamp', 0 ) );
+		$get_current_date = $current_date;
+
     if ( isset( $_GET['notice_date'] ) ) {
       $get_current_date = sanitize_text_field( $_GET['notice_date'] );
       $current_date = \Carbon\Carbon::parse( $get_current_date );
@@ -61,11 +71,13 @@ class WKI_Shortcode_Notices {
     $notices = WKI_DB_Notices::get_instance()->get_by_date([
       'current_date' => $current_date->format('Ymd')
     ]);
+
     $meetings = WKI_DB_Meetings::get_instance()->get_by_date([
       'current_date' => $current_date->format('Ymd')
     ]);
-
 		$data = [
+			'minimal' => $atts['minimal'],
+			'show_date_pagination' => $atts['show_date_pagination'],
 			'notices' => $notices,
 			'meetings' => $meetings,
 			'current_date' => $current_date->format('Y-m-d'),
@@ -77,6 +89,10 @@ class WKI_Shortcode_Notices {
 		];
 
 		$template_str = 'template-phs_show_notice_meeting.php';
+
+		if ( $atts['minimal'] ) {
+			$template_str = 'template-phs_show_notice_meeting_minimal.php';
+		}
 		$check_in_theme = WKI_View::get_instance()->get_in_theme( $template_str );
 
 		ob_start();

@@ -67,7 +67,7 @@ class WKI_CPT_Meetings {
   		'query_var'          => true,
   		'rewrite'            => array( 'slug' => 'wki-meetings' ),
   		'capability_type'    => 'post',
-  		'has_archive'        => true,
+  		'has_archive'        => false,
   		'hierarchical'       => false,
   		'menu_position'      => null,
   		'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' )

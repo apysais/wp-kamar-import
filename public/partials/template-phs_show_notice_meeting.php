@@ -1,4 +1,4 @@
-<!-- From Theme -->
+<!-- From Plugin -->
 <div class="bootstrap-iso">
 
   <h2 class="notice-current-date"><?php echo \Carbon\Carbon::parse($current_date)->format('l dS '); ?> Of <?php echo \Carbon\Carbon::parse($current_date)->format(' F, Y'); ?></h2>

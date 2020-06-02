@@ -75,8 +75,12 @@ class WKI_DB_Meetings {
 				while ( $query->have_posts() ) {
 					$query->the_post();
 					$post_id = get_the_ID();
-					$get_date = get_post_meta( $post_id, 'wki_meetings_time', true );
-					$parse_date = \Carbon\Carbon::parse($get_date);
+					$get_date = get_post_meta( $post_id, 'wki_meetings_date', true );
+
+					if ( $get_date ) {
+						$parse_date = \Carbon\Carbon::parse($get_date);
+					}
+
 					$data[] = [
 						'title' => get_the_title(),
 						'content' =>get_the_content(),
@@ -126,7 +130,7 @@ class WKI_DB_Meetings {
     return $uuid;
   }
 
-  public function remove_notices( $data ) {
+  public function remove_meetings( $data ) {
 
 		$meetings = $this->get_all();
 
@@ -138,25 +142,24 @@ class WKI_DB_Meetings {
 
 		if ( count( $results ) >= 1 ) {
 			$args = array(
-			    'post_type'  => 'wki_meetings',
-					'posts_per_page' => -1,
-			    'meta_query' => array(
+			    'post_type'  			=> 'wki_meetings',
+					'posts_per_page' 	=> -1,
+			    'meta_query' 			=> array(
 			        array(
 			            'key' => 'wki_meetings_uuid',
 			            'value'   => $results,
 			        ),
 			    ),
 			);
-
 			$query = new WP_Query( $args );
 
 			if ( $query->have_posts() ) {
-					$posts = $query->get_posts();
-					foreach( $posts as $post ) {
-						$post_id = $post->ID;
-						wp_delete_post( $post_id );
-					}
+				$posts = $query->get_posts();
+				foreach( $posts as $post ) {
+					$post_id = $post->ID;
+					wp_delete_post( $post_id );
 				}
+			}
 			wp_reset_postdata();
 		}
   }

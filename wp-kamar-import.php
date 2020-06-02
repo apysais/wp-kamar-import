@@ -146,8 +146,6 @@ function run_wp_kamar_import() {
 	WKI_Menu::get_instance();
 	//shortcodes
 	WKI_Shortcode_Notices::get_instance();
-	//kie_run_cron_manually();
-	WKI_SyncTo::get_instance()->manual();
 
 }
 add_action( 'plugins_loaded', 'run_wp_kamar_import' );
@@ -156,4 +154,5 @@ add_action( 'plugins_loaded', 'run_wp_kamar_import' );
 add_action( 'init' , 'init_wp_kamar_import');
 function init_wp_kamar_import() {
 	WKI_CPT_Init::get_instance()->init_cpt();
+	WKI_SyncTo::get_instance()->manual();
 }

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * get the notices.
  */
-class WKI_Notices {
+class WKI_Calendar {
   /**
 	 * instance of this class
 	 *
@@ -47,17 +47,14 @@ class WKI_Notices {
 		$data = [];
 		$ret = false;
 
-		if ( isset( $json_data['SMSDirectoryData'] ) && isset( $json_data['SMSDirectoryData']['notices'] ) ) {
+		if ( isset( $json_data['SMSDirectoryData'] ) && isset( $json_data['SMSDirectoryData']['calendars'] ) ) {
 
-			if ( $json_data['SMSDirectoryData']['notices']['count'] >= 1 ) {
-				$json_data = $json_data['SMSDirectoryData']['notices']['data'];
-
-				$ret_notice = WKI_Import_Notices::get_instance()->init( ['data' => $json_data] );
-				$ret_notice = WKI_Import_Meetings::get_instance()->init( ['data' => $json_data] );
-
+			if ( count( $json_data['SMSDirectoryData']['calendars']['events'] ) >= 1) {
+				$json_data = $json_data['SMSDirectoryData']['calendars']['events'];
+				WKI_Import_Calendar::get_instance()->init( ['data' => $json_data] );
 				$ret = true;
 			}
-			
+
 		}
 
 		return $ret;
