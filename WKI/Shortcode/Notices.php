@@ -49,10 +49,9 @@ class WKI_Shortcode_Notices {
 
   public function init( $atts ) {
 		$atts = shortcode_atts( array(
-        'minimal' => false,
-        'show_date_pagination' => false
+        'minimal' => "0",
+        'show_date_pagination' => "1"
     ), $atts, 'phs_show_notice_meeting' );
-
     //$current_date = date( 'Ymd', current_time( 'timestamp', 0 ) );
     $current_date = \Carbon\Carbon::parse( current_time( 'timestamp', 0 ) );
 		$get_current_date = $current_date;
