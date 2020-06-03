@@ -121,12 +121,17 @@ class WKI_DB_Notices {
   public function remove_notices($data) {
 
 		$notices = $this->get_all();
+		$key_notices  = array_keys( $notices );
 
     $uuids = $this->get_data_uuids( $data );
-
 		$key_kamars   = $uuids;
-		$key_notices  = array_keys( $notices );
+
 		$results      = array_diff( $key_notices , $key_kamars );
+		// wki_dd($notices);
+		// wki_dd($key_kamars);
+		// wki_dd($key_notices);
+		// wki_dd($results);
+		// exit();
 		if ( count( $results ) >= 1 ) {
 			$args = array(
 			    'post_type'  => 'wki_notices',

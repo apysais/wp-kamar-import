@@ -133,13 +133,17 @@ class WKI_DB_Meetings {
   public function remove_meetings( $data ) {
 
 		$meetings = $this->get_all();
+		$key_meetings = array_keys( $meetings );
 
     $uuids = $this->get_data_uuids( $data );
-
 		$key_kamars   = $uuids;
-		$key_meetings = array_keys( $meetings );
-		$results      = array_diff( $key_meetings , $key_kamars );
 
+		$results      = array_diff( $key_meetings , $key_kamars );
+		// wki_dd($meetings);
+		// wki_dd($key_kamars);
+		// wki_dd($key_meetings);
+		// wki_dd($results);
+		// exit();
 		if ( count( $results ) >= 1 ) {
 			$args = array(
 			    'post_type'  			=> 'wki_meetings',

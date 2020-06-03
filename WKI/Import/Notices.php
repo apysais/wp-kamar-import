@@ -48,7 +48,7 @@ class WKI_Import_Notices {
 			$datas = $args['data'];
 			$ret = $this->import($datas);
 			//remove data that is removed in json
-			//WKI_DB_Notices::get_instance()->remove_notices($datas);
+			WKI_DB_Notices::get_instance()->remove_notices($datas);
 			return true;
 		}
 		return false;

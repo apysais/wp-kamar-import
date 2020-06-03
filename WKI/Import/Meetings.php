@@ -48,7 +48,7 @@ class WKI_Import_Meetings {
 			$datas = $args['data'];
 			$ret = $this->import($datas);
 			//remove data that is removed in json
-			//WKI_DB_Meetings::get_instance()->remove_meetings($datas);
+			WKI_DB_Meetings::get_instance()->remove_meetings($datas);
 			return true;
 		}
 		return false;
