@@ -55,7 +55,7 @@ class WKI_Import_Part_Staff {
 	public function import( $datas = [] ) {
 		$ret = [];
 		if ( count($datas) >= 1 ) {
-
+			
 		}// !empty($datas)
 		return $ret;
 	}//import
