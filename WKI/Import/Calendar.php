@@ -102,20 +102,43 @@ class WKI_Import_Calendar {
 				if ( $v['published'] ) {
 
 					if ( isset( $v['datestart'] ) ) {
-						$event_data['start'] = new DateTime( $v['datestart'], eo_get_blog_timezone() );
+						$date_start = $v['datestart'];
+						$time_start = '235900';
+						$data_date_start = $date_start .' '. $time_start;
+						if ( isset( $v['timestart'] ) ) {
+							$data_date_start = $date_start .' '. $v['timestart'];
+						}
+						$event_data['start'] = new DateTime( $data_date_start, eo_get_blog_timezone() );
 					}
+
+					$time_end = '235900';
+					if ( isset( $v['timefinish'] ) ) {
+						$time_end = $v['timefinish'];
+					}
+
 					if ( isset( $v['datefinish'] ) ) {
-						$event_data['end'] = new DateTime( $v['datefinish'], eo_get_blog_timezone() );
+						$data_date_end = $v['datefinish'] .' '. $time_end;
+						$event_data['end'] = new DateTime( $data_date_end, eo_get_blog_timezone() );
 					} else {
-						$event_data['end'] = $event_data['start'];
+						$data_date_end = $v['datestart'] .' '. $time_end;
+						$event_data['end'] = $data_date_end;
 					}
 
 					$event_data['all_day'] = 1;
 
+					if ( isset( $v['location'] ) ) {
+							$event_data['venue'] = $v['location'];
+					}
+
+					$description = $v['summary'];
+					if ( isset($v['description']) ) {
+						$description = $v['description'];
+					}
+
 					$post_data = array(
-					 'post_name'		=>	sanitize_title( $v['summary'] ),
+					 'post_name'		=>	sanitize_title($v['summary']),
 					 'post_title'		=>	$v['summary'],
-					 'post_content'	=>	$v['summary'],
+					 'post_content'	=>	$description,
 					);
 
 					$check_event = get_posts([

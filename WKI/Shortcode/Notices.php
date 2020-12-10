@@ -40,7 +40,7 @@ class WKI_Shortcode_Notices {
 	}
 
 	public function __construct()	{
-    add_shortcode( 'phs_show_notice_meeting', [ $this, 'init' ] );
+    add_shortcode( 'wki_show_notice_meeting', [ $this, 'init' ] );
   }
 
 	public function minimal() {

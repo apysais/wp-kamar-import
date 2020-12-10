@@ -55,7 +55,17 @@ class WKI_Import_Part_Staff {
 	public function import( $datas = [] ) {
 		$ret = [];
 		if ( count($datas) >= 1 ) {
-			
+			//loop
+				$user_data = [
+
+				];
+				$username = sanitize_text_field( $data['username'] );
+				if ( username_exists( $username ) ) {
+					//update
+				} else {
+					//insert;
+				}
+			//loop
 		}// !empty($datas)
 		return $ret;
 	}//import
