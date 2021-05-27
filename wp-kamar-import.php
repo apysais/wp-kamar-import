@@ -36,9 +36,9 @@ if ( ! defined( 'WPINC' ) ) {
  * Rename this for your plugin and update it as you release new versions.
  */
 define( 'WP_KAMAR_IMPORT_VERSION', '1.0.0' );
-define( 'WP_KAMAR_JSON_DIRECTORY', ABSPATH . 'kamar/directoryservices/json/data/' );
-define( 'WP_KAMAR_JSON_DIRECTORY_DONE_NOTICES', ABSPATH . 'kamar/directoryservices/json/data-done-notices/' );
-define( 'WP_KAMAR_JSON_DIRECTORY_DONE_EVENTS', ABSPATH . 'kamar/directoryservices/json/data-done-events/' );
+define( 'WP_KAMAR_JSON_DIRECTORY', ABSPATH . 'kamar/directoryservices-v2/directoryservices/json/data/' );
+define( 'WP_KAMAR_JSON_DIRECTORY_DONE_NOTICES', ABSPATH . 'kamar/directoryservices-v2/directoryservices/json/data-done-notices/' );
+define( 'WP_KAMAR_JSON_DIRECTORY_DONE_EVENTS', ABSPATH . 'kamar/directoryservices-v2/directoryservices/json/data-done-events/' );
 
 /**
  * For autoloading classes

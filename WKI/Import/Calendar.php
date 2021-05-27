@@ -45,11 +45,11 @@ class WKI_Import_Calendar {
 		$datas = [];
 		if ( isset($args['data']) ) {
 			$datas = $args['data'];
-      //check if eo events is active
-      if ( defined( 'EVENT_ORGANISER_VER' ) ) {
-        $ret = $this->import($datas);
-  			//remove data that is removed in json
-  			WKI_DB_Calendar::get_instance()->remove_data( $datas );
+			//check if eo events is active
+			if ( defined( 'EVENT_ORGANISER_VER' ) ) {
+				$ret = $this->import($datas);
+				//remove data that is removed in json
+				WKI_DB_Calendar::get_instance()->remove_data( $datas );
 				return true;
 			}
 		}
