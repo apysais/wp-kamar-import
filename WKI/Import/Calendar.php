@@ -140,29 +140,19 @@ class WKI_Import_Calendar {
 					 'post_title'		=>	$v['summary'],
 					 'post_content'	=>	$description,
 					);
-
-					$check_event = get_posts([
-						'post_type'      => 'event',
-						'posts_per_page' => 1,
+					
+					$check_event = eo_get_events([
+						'numberposts' => 1,
 						'meta_key'       => 'kamar_uuid',
 						'meta_value'     => $v['uuid'],
 					]);
 
-					if ( !$check_event ) {
+					if ( !$check_event && !$this->checkKamarTitleEventTitleMatch($v['summary'], $check_event[0]->post_title) ) {
 						$e = eo_insert_event( $post_data , $event_data );
 						wp_publish_post( $e );
 						update_post_meta( $e, 'kamar_uuid', $v['uuid']);
 
 						$this->set_category( $v['colour'], $e );
-
-						if ( $e ) {
-							$update_post = array(
-								'ID'          => $e,
-								'post_name'		=>	sanitize_title($v['summary']),
-							);
-							// Update the post into the database
-							wp_update_post( $update_post );
-						}//if e event update
 
 					} else {
 						//update here
@@ -171,15 +161,6 @@ class WKI_Import_Calendar {
 
 							$e = eo_update_event( $post_id, $event_data, $post_data  );
 							$this->set_category( $v['colour'], $e );
-
-							if ( $e ) {
-								$update_post = array(
-									'ID'          => $post_id,
-									'post_name'		=>	sanitize_title($v['summary']),
-								);
-								// Update the post into the database
-								wp_update_post( $update_post );
-							}//if e event update
 						}//if check event update
 					}//if checked event insert
 				}//if published
@@ -187,5 +168,14 @@ class WKI_Import_Calendar {
 		}// !empty($datas)
 		return $ret_data;
 	}//import
+
+	protected function checkKamarTitleEventTitleMatch($kamarTitle, $eventTitle)
+	{
+		if(sanitize_title($kamarTitle) == sanitize_title($eventTitle) ){
+			return true;
+		}
+
+		return false;
+	}
 
 }//WKI_Import_Calendar

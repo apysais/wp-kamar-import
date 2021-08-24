@@ -47,12 +47,15 @@ class WKI_GetJsonContent {
    */
   public function getContent( $file_json ) {
     $json_kamar = false;
+	
+	if( file_exists($file_json) ) {
+		$string = file_get_contents( $file_json );
 
-    $string = file_get_contents( $file_json );
-
-    if ( $string ) {
-      $json_kamar = json_decode( $string, true );
-    }
+		if ( $string ) {
+		$json_kamar = json_decode( $string, true );
+		}
+	}
+    
 
     return $json_kamar;
   }

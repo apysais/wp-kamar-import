@@ -89,7 +89,7 @@ class WKI_SyncTo {
 
 								if ( $sync_obj ) {
 									WKI_GetJsonFile::get_instance()->move( $json_file, $move_to . $file_name );
-									wki_custom_logs( 'Kamar Import : ' . $file_name, 'kamar' );
+									//wki_custom_logs( 'Kamar Import : ' . $file_name, 'kamar' );
 								}
 
 							} //if filename and file path
