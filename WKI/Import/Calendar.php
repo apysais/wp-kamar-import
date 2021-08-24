@@ -147,13 +147,11 @@ class WKI_Import_Calendar {
 						'meta_value'     => $v['uuid'],
 					]);
 
-					if ( !$check_event && !$this->checkKamarTitleEventTitleMatch($v['summary'], $check_event[0]->post_title) ) {
+					if ( !$check_event ) {
 						$e = eo_insert_event( $post_data , $event_data );
 						wp_publish_post( $e );
 						update_post_meta( $e, 'kamar_uuid', $v['uuid']);
-
 						$this->set_category( $v['colour'], $e );
-
 					} else {
 						//update here
 						if ( $check_event ) {
